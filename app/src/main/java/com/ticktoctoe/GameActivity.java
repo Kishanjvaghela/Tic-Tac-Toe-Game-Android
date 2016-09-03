@@ -22,6 +22,12 @@ public class GameActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_game);
+        mBinding.resultLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         initLayout();
         turn = Utils.getRandom(0, 1);
         if (turn == 0) {
@@ -51,8 +57,20 @@ public class GameActivity extends Activity implements View.OnClickListener {
     }
 
     private void showResult(int winner) {
-        String result = winner == 0 ? "You lose" : "You win, Congratulations!";
+        String result="";
+        switch (winner) {
+            case 0:
+                result = "You lose";
+                break;
+            case 1:
+                result = "You win, Congratulations!";
+                break;
+            case 2:
+                result = "Nobody wins";
+                break;
+        }
         mBinding.resultTextView.setText(result);
+        mBinding.resultLayout.setVisibility(View.VISIBLE);
     }
 
 
@@ -101,7 +119,19 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 return valueArray[0][2];
             }
         }
-        return -1;
+        int count = 0;
+        for (int i = 0; i < valueArray.length; i++) {
+            for (int j = 0; j < valueArray.length; j++) {
+                if (valueArray[i][j] != -1) {
+                    count++;
+                }
+            }
+        }
+        if (count == 9) {
+            return 2;
+        } else {
+            return -1;
+        }
     }
 
     private void initLayout() {
