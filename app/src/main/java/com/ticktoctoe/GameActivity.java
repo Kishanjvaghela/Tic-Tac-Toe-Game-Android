@@ -10,7 +10,7 @@ import com.ticktoctoe.databinding.ActivityGameBinding;
 
 public class GameActivity extends Activity implements View.OnClickListener {
 
-    private int[][] valueArray = {{2, 2, 2}, {2, 2, 2}, {2, 2, 2}};
+    private int[][] valueArray = {{-1, -1, -1}, {-1, -1, -1}, {-1, -1, -1}};
 
     private TextView[][] textViews;
 
@@ -25,26 +25,41 @@ public class GameActivity extends Activity implements View.OnClickListener {
         initLayout();
         turn = Utils.getRandom(0, 1);
         if (turn == 0) {
-            robot();
+            robotTurn();
         } else {
             user();
         }
     }
 
     private void user() {
-
-    }
-
-    private void robot() {
-        if (setRobotValues()) {
-            user();
+        int winner = checkWinner();
+        if (winner != -1) {
+            showResult(winner);
         }
     }
+
+    private void robotTurn() {
+        int winner = checkWinner();
+        if (winner == -1) {
+            if (setRobotValues()) {
+                user();
+            }
+        } else {
+            showResult(winner);
+        }
+
+    }
+
+    private void showResult(int winner) {
+        String result = winner == 0 ? "You lose" : "You win, Congratulations!";
+        mBinding.resultTextView.setText(result);
+    }
+
 
     private boolean setRobotValues() {
         for (int i = 0; i < valueArray.length; i++) {
             for (int j = 0; j < valueArray.length; j++) {
-                if (valueArray[i][j] == 2) {
+                if (valueArray[i][j] == -1) {
                     valueArray[i][j] = 0;
                     textViews[i][j].setText("0");
                     textViews[i][j].setEnabled(false);
@@ -58,9 +73,36 @@ public class GameActivity extends Activity implements View.OnClickListener {
     private void userTurn(TextView textView) {
         textView.setText("1");
         textView.setEnabled(false);
-        robot();
+        robotTurn();
     }
 
+    private int checkWinner() {
+        for (int i = 0; i < valueArray.length; i++) {
+            if (valueArray[i][0] == valueArray[i][1]) {
+                if (valueArray[i][1] == valueArray[i][2]) {
+                    return valueArray[i][0];
+                }
+            }
+        }
+        for (int i = 0; i < valueArray.length; i++) {
+            if (valueArray[0][i] == valueArray[1][i]) {
+                if (valueArray[1][i] == valueArray[2][i]) {
+                    return valueArray[0][i];
+                }
+            }
+        }
+        if (valueArray[0][0] == valueArray[1][1]) {
+            if (valueArray[1][1] == valueArray[2][2]) {
+                return valueArray[2][2];
+            }
+        }
+        if (valueArray[0][2] == valueArray[1][1]) {
+            if (valueArray[1][1] == valueArray[2][0]) {
+                return valueArray[0][2];
+            }
+        }
+        return -1;
+    }
 
     private void initLayout() {
         textViews = new TextView[3][3];
