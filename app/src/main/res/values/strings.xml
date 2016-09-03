@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TickTocToe</string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="btn_start_game">Start Game</string>
+</resources>
