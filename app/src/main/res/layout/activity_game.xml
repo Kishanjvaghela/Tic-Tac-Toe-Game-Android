@@ -21,18 +21,22 @@
 
                 <TextView
                     android:id="@+id/text00"
+                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
-                    android:background="@color/colorPrimary" />
+                    android:background="@color/colorPrimary"
+                    tools:text="1" />
 
                 <TextView
                     android:id="@+id/text01"
+                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
                     android:background="@color/colorPrimaryDark" />
 
                 <TextView
                     android:id="@+id/text02"
+                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
                     android:background="@color/colorPrimary" />
@@ -45,18 +49,21 @@
 
                 <TextView
                     android:id="@+id/text10"
+                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
                     android:background="@color/colorPrimaryDark" />
 
                 <TextView
                     android:id="@+id/text11"
+                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
                     android:background="@color/colorPrimary" />
 
                 <TextView
                     android:id="@+id/text12"
+                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
                     android:background="@color/colorPrimaryDark" />
@@ -69,18 +76,21 @@
 
                 <TextView
                     android:id="@+id/text20"
+                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
                     android:background="@color/colorPrimary" />
 
                 <TextView
                     android:id="@+id/text21"
+                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
                     android:background="@color/colorPrimaryDark" />
 
                 <TextView
                     android:id="@+id/text22"
+                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
                     android:background="@color/colorPrimary" />
