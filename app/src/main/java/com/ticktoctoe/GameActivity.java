@@ -10,7 +10,14 @@ import com.ticktoctoe.databinding.ActivityGameBinding;
 
 public class GameActivity extends Activity implements View.OnClickListener {
 
-    private int[][] valueArray = {{-1, -1, -1}, {-1, -1, -1}, {-1, -1, -1}};
+    private static final int VALUE_DEFAULT = -1;
+    private static final int VALUE_ROBOT = 0;
+    private static final int VALUE_USER = 1;
+    private static final int VALUE_NONE = 2;
+
+    private int[][] valueArray = {{VALUE_DEFAULT, VALUE_DEFAULT, VALUE_DEFAULT}
+            , {VALUE_DEFAULT, VALUE_DEFAULT, VALUE_DEFAULT},
+            {VALUE_DEFAULT, VALUE_DEFAULT, VALUE_DEFAULT}};
 
     private TextView[][] textViews;
 
@@ -30,7 +37,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
         });
         initLayout();
         turn = Utils.getRandom(0, 1);
-        if (turn == 0) {
+        if (turn == VALUE_ROBOT) {
             robotTurn();
         } else {
             user();
@@ -39,14 +46,14 @@ public class GameActivity extends Activity implements View.OnClickListener {
 
     private void user() {
         int winner = checkWinner();
-        if (winner != -1) {
+        if (winner != VALUE_DEFAULT) {
             showResult(winner);
         }
     }
 
     private void robotTurn() {
         int winner = checkWinner();
-        if (winner == -1) {
+        if (winner == VALUE_DEFAULT) {
             if (setRobotValues()) {
                 user();
             }
@@ -57,15 +64,15 @@ public class GameActivity extends Activity implements View.OnClickListener {
     }
 
     private void showResult(int winner) {
-        String result="";
+        String result = "";
         switch (winner) {
-            case 0:
+            case VALUE_ROBOT:
                 result = "You lose";
                 break;
-            case 1:
+            case VALUE_USER:
                 result = "You win, Congratulations!";
                 break;
-            case 2:
+            case VALUE_NONE:
                 result = "Nobody wins";
                 break;
         }
@@ -77,8 +84,8 @@ public class GameActivity extends Activity implements View.OnClickListener {
     private boolean setRobotValues() {
         for (int i = 0; i < valueArray.length; i++) {
             for (int j = 0; j < valueArray.length; j++) {
-                if (valueArray[i][j] == -1) {
-                    valueArray[i][j] = 0;
+                if (valueArray[i][j] == VALUE_DEFAULT) {
+                    valueArray[i][j] = VALUE_ROBOT;
                     textViews[i][j].setText("0");
                     textViews[i][j].setEnabled(false);
                     return true;
@@ -95,6 +102,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
     }
 
     private int checkWinner() {
+        // check vertical row
         for (int i = 0; i < valueArray.length; i++) {
             if (valueArray[i][0] == valueArray[i][1]) {
                 if (valueArray[i][1] == valueArray[i][2]) {
@@ -102,6 +110,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 }
             }
         }
+        // check horizontal row
         for (int i = 0; i < valueArray.length; i++) {
             if (valueArray[0][i] == valueArray[1][i]) {
                 if (valueArray[1][i] == valueArray[2][i]) {
@@ -109,16 +118,19 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 }
             }
         }
+        // check diagonal row
         if (valueArray[0][0] == valueArray[1][1]) {
             if (valueArray[1][1] == valueArray[2][2]) {
                 return valueArray[2][2];
             }
         }
+        // check diagonal row
         if (valueArray[0][2] == valueArray[1][1]) {
             if (valueArray[1][1] == valueArray[2][0]) {
                 return valueArray[0][2];
             }
         }
+        // check for game over
         int count = 0;
         for (int i = 0; i < valueArray.length; i++) {
             for (int j = 0; j < valueArray.length; j++) {
@@ -128,9 +140,9 @@ public class GameActivity extends Activity implements View.OnClickListener {
             }
         }
         if (count == 9) {
-            return 2;
+            return VALUE_NONE;
         } else {
-            return -1;
+            return VALUE_DEFAULT;
         }
     }
 
@@ -160,39 +172,39 @@ public class GameActivity extends Activity implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.text00:
-                valueArray[0][0] = 1;
+                valueArray[0][0] = VALUE_USER;
                 userTurn(mBinding.text00);
                 break;
             case R.id.text01:
-                valueArray[0][1] = 1;
+                valueArray[0][1] = VALUE_USER;
                 userTurn(mBinding.text01);
                 break;
             case R.id.text02:
-                valueArray[0][2] = 1;
+                valueArray[0][2] = VALUE_USER;
                 userTurn(mBinding.text02);
                 break;
             case R.id.text10:
-                valueArray[1][0] = 1;
+                valueArray[1][0] = VALUE_USER;
                 userTurn(mBinding.text10);
                 break;
             case R.id.text11:
-                valueArray[1][1] = 1;
+                valueArray[1][1] = VALUE_USER;
                 userTurn(mBinding.text11);
                 break;
             case R.id.text12:
-                valueArray[1][2] = 1;
+                valueArray[1][2] = VALUE_USER;
                 userTurn(mBinding.text12);
                 break;
             case R.id.text20:
-                valueArray[2][0] = 1;
+                valueArray[2][0] = VALUE_USER;
                 userTurn(mBinding.text20);
                 break;
             case R.id.text21:
-                valueArray[2][1] = 1;
+                valueArray[2][1] = VALUE_USER;
                 userTurn(mBinding.text21);
                 break;
             case R.id.text22:
-                valueArray[2][2] = 1;
+                valueArray[2][2] = VALUE_USER;
                 userTurn(mBinding.text22);
                 break;
         }
