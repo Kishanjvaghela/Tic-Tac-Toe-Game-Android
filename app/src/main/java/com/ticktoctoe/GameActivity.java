@@ -3,10 +3,13 @@ package com.ticktoctoe;
 import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.util.Pair;
 import android.view.View;
 import android.widget.TextView;
 
 import com.ticktoctoe.databinding.ActivityGameBinding;
+
+import java.util.ArrayList;
 
 public class GameActivity extends Activity implements View.OnClickListener {
 
@@ -15,7 +18,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
     private static final int VALUE_USER = 1;
     private static final int VALUE_NONE = 2;
 
-    private int[][] valueArray = {{VALUE_DEFAULT, VALUE_DEFAULT, VALUE_DEFAULT}
+    private int[][] boxArray = {{VALUE_DEFAULT, VALUE_DEFAULT, VALUE_DEFAULT}
             , {VALUE_DEFAULT, VALUE_DEFAULT, VALUE_DEFAULT},
             {VALUE_DEFAULT, VALUE_DEFAULT, VALUE_DEFAULT}};
 
@@ -82,17 +85,72 @@ public class GameActivity extends Activity implements View.OnClickListener {
 
 
     private boolean setRobotValues() {
-        for (int i = 0; i < valueArray.length; i++) {
-            for (int j = 0; j < valueArray.length; j++) {
-                if (valueArray[i][j] == VALUE_DEFAULT) {
-                    valueArray[i][j] = VALUE_ROBOT;
-                    textViews[i][j].setText("0");
-                    textViews[i][j].setEnabled(false);
-                    return true;
+        ArrayList<Pair<Integer, Integer>> emptyList = getEmptyMoveList();
+        if (emptyList.size() == 0) {
+            return false;
+        } else {
+            int i, j;
+
+            // get best possible move to win robot.
+            for (Pair<Integer, Integer> pair : emptyList) {
+                i = pair.first;
+                j = pair.second;
+                if (boxArray[i][j] == VALUE_DEFAULT) {
+                    boxArray[i][j] = VALUE_ROBOT;
+                    int winner = checkWinner();
+                    if (winner == VALUE_ROBOT || winner == VALUE_NONE) {
+                        textViews[i][j].setText("0");
+                        textViews[i][j].setEnabled(false);
+                        return true;
+                    } else {
+                        boxArray[i][j] = VALUE_DEFAULT;
+                    }
+                }
+            }
+            // get best possible move to loose user.
+            for (Pair<Integer, Integer> pair : emptyList) {
+                i = pair.first;
+                j = pair.second;
+                if (boxArray[i][j] == VALUE_DEFAULT) {
+                    boxArray[i][j] = VALUE_USER;
+                    int winner = checkWinner();
+                    if (winner == VALUE_USER) {
+                        boxArray[i][j] = VALUE_ROBOT;
+                        textViews[i][j].setText("0");
+                        textViews[i][j].setEnabled(false);
+                        return true;
+                    } else {
+                        boxArray[i][j] = VALUE_DEFAULT;
+                    }
+                }
+            }
+
+            // choose random move position
+            int randomPos = Utils.getRandom(0, emptyList.size());
+            Pair<Integer, Integer> emptyPair = emptyList.get(randomPos);
+            boxArray[emptyPair.first][emptyPair.second] = VALUE_ROBOT;
+            TextView textView = textViews[emptyPair.first][emptyPair.second];
+            textView.setText("0");
+            textView.setEnabled(false);
+            return true;
+        }
+    }
+
+    /**
+     * return all empty pair from box
+     *
+     * @return
+     */
+    private ArrayList<Pair<Integer, Integer>> getEmptyMoveList() {
+        ArrayList<Pair<Integer, Integer>> emptyList = new ArrayList<>();
+        for (int i = 0; i < boxArray.length; i++) {
+            for (int j = 0; j < boxArray.length; j++) {
+                if (boxArray[i][j] == VALUE_DEFAULT) {
+                    emptyList.add(new Pair<>(i, j));
                 }
             }
         }
-        return false;
+        return emptyList;
     }
 
     private void userTurn(TextView textView) {
@@ -103,38 +161,38 @@ public class GameActivity extends Activity implements View.OnClickListener {
 
     private int checkWinner() {
         // check vertical row
-        for (int i = 0; i < valueArray.length; i++) {
-            if (valueArray[i][0] == valueArray[i][1]) {
-                if (valueArray[i][1] == valueArray[i][2]) {
-                    return valueArray[i][0];
+        for (int i = 0; i < boxArray.length; i++) {
+            if (boxArray[i][0] == boxArray[i][1]) {
+                if (boxArray[i][1] == boxArray[i][2]) {
+                    return boxArray[i][0];
                 }
             }
         }
         // check horizontal row
-        for (int i = 0; i < valueArray.length; i++) {
-            if (valueArray[0][i] == valueArray[1][i]) {
-                if (valueArray[1][i] == valueArray[2][i]) {
-                    return valueArray[0][i];
+        for (int i = 0; i < boxArray.length; i++) {
+            if (boxArray[0][i] == boxArray[1][i]) {
+                if (boxArray[1][i] == boxArray[2][i]) {
+                    return boxArray[0][i];
                 }
             }
         }
         // check diagonal row
-        if (valueArray[0][0] == valueArray[1][1]) {
-            if (valueArray[1][1] == valueArray[2][2]) {
-                return valueArray[2][2];
+        if (boxArray[0][0] == boxArray[1][1]) {
+            if (boxArray[1][1] == boxArray[2][2]) {
+                return boxArray[2][2];
             }
         }
         // check diagonal row
-        if (valueArray[0][2] == valueArray[1][1]) {
-            if (valueArray[1][1] == valueArray[2][0]) {
-                return valueArray[0][2];
+        if (boxArray[0][2] == boxArray[1][1]) {
+            if (boxArray[1][1] == boxArray[2][0]) {
+                return boxArray[0][2];
             }
         }
         // check for game over
         int count = 0;
-        for (int i = 0; i < valueArray.length; i++) {
-            for (int j = 0; j < valueArray.length; j++) {
-                if (valueArray[i][j] != -1) {
+        for (int i = 0; i < boxArray.length; i++) {
+            for (int j = 0; j < boxArray.length; j++) {
+                if (boxArray[i][j] != -1) {
                     count++;
                 }
             }
@@ -172,39 +230,39 @@ public class GameActivity extends Activity implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.text00:
-                valueArray[0][0] = VALUE_USER;
+                boxArray[0][0] = VALUE_USER;
                 userTurn(mBinding.text00);
                 break;
             case R.id.text01:
-                valueArray[0][1] = VALUE_USER;
+                boxArray[0][1] = VALUE_USER;
                 userTurn(mBinding.text01);
                 break;
             case R.id.text02:
-                valueArray[0][2] = VALUE_USER;
+                boxArray[0][2] = VALUE_USER;
                 userTurn(mBinding.text02);
                 break;
             case R.id.text10:
-                valueArray[1][0] = VALUE_USER;
+                boxArray[1][0] = VALUE_USER;
                 userTurn(mBinding.text10);
                 break;
             case R.id.text11:
-                valueArray[1][1] = VALUE_USER;
+                boxArray[1][1] = VALUE_USER;
                 userTurn(mBinding.text11);
                 break;
             case R.id.text12:
-                valueArray[1][2] = VALUE_USER;
+                boxArray[1][2] = VALUE_USER;
                 userTurn(mBinding.text12);
                 break;
             case R.id.text20:
-                valueArray[2][0] = VALUE_USER;
+                boxArray[2][0] = VALUE_USER;
                 userTurn(mBinding.text20);
                 break;
             case R.id.text21:
-                valueArray[2][1] = VALUE_USER;
+                boxArray[2][1] = VALUE_USER;
                 userTurn(mBinding.text21);
                 break;
             case R.id.text22:
-                valueArray[2][2] = VALUE_USER;
+                boxArray[2][2] = VALUE_USER;
                 userTurn(mBinding.text22);
                 break;
         }
