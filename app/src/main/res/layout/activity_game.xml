@@ -20,27 +20,28 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
+                <ImageView
                     android:id="@+id/text00"
-                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
                     android:background="@color/colorPrimary"
-                    tools:text="1" />
+                    android:scaleType="center"
+                    tools:src="@drawable/ic_circle" />
 
-                <TextView
+                <ImageView
                     android:id="@+id/text01"
-                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
-                    android:background="@color/colorPrimaryDark" />
+                    android:background="@color/colorPrimaryDark"
+                    android:scaleType="center"
+                    tools:src="@drawable/ic_cross" />
 
-                <TextView
+                <ImageView
                     android:id="@+id/text02"
-                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
-                    android:background="@color/colorPrimary" />
+                    android:background="@color/colorPrimary"
+                    android:scaleType="center" />
             </LinearLayout>
 
             <LinearLayout
@@ -48,26 +49,26 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
+                <ImageView
                     android:id="@+id/text10"
-                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
-                    android:background="@color/colorPrimaryDark" />
+                    android:background="@color/colorPrimaryDark"
+                    android:scaleType="center" />
 
-                <TextView
+                <ImageView
                     android:id="@+id/text11"
-                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
-                    android:background="@color/colorPrimary" />
+                    android:background="@color/colorPrimary"
+                    android:scaleType="center" />
 
-                <TextView
+                <ImageView
                     android:id="@+id/text12"
-                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
-                    android:background="@color/colorPrimaryDark" />
+                    android:background="@color/colorPrimaryDark"
+                    android:scaleType="center" />
             </LinearLayout>
 
             <LinearLayout
@@ -75,26 +76,26 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
+                <ImageView
                     android:id="@+id/text20"
-                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
-                    android:background="@color/colorPrimary" />
+                    android:background="@color/colorPrimary"
+                    android:scaleType="center" />
 
-                <TextView
+                <ImageView
                     android:id="@+id/text21"
-                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
-                    android:background="@color/colorPrimaryDark" />
+                    android:background="@color/colorPrimaryDark"
+                    android:scaleType="center" />
 
-                <TextView
+                <ImageView
                     android:id="@+id/text22"
-                    style="@style/TextStyle"
                     android:layout_width="@dimen/box_size"
                     android:layout_height="@dimen/box_size"
-                    android:background="@color/colorPrimary" />
+                    android:background="@color/colorPrimary"
+                    android:scaleType="center" />
             </LinearLayout>
         </LinearLayout>
 

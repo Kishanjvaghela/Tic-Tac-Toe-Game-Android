@@ -5,7 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.util.Pair;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.ticktoctoe.databinding.ActivityGameBinding;
 
@@ -22,7 +22,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
             , {VALUE_DEFAULT, VALUE_DEFAULT, VALUE_DEFAULT},
             {VALUE_DEFAULT, VALUE_DEFAULT, VALUE_DEFAULT}};
 
-    private TextView[][] textViews;
+    private ImageView[][] boxViews;
 
     private ActivityGameBinding mBinding;
 
@@ -57,9 +57,8 @@ public class GameActivity extends Activity implements View.OnClickListener {
     private void robotTurn() {
         int winner = checkWinner();
         if (winner == VALUE_DEFAULT) {
-            if (setRobotValues()) {
-                user();
-            }
+            setRobotValues();
+            user();
         } else {
             showResult(winner);
         }
@@ -99,8 +98,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
                     boxArray[i][j] = VALUE_ROBOT;
                     int winner = checkWinner();
                     if (winner == VALUE_ROBOT || winner == VALUE_NONE) {
-                        textViews[i][j].setText("0");
-                        textViews[i][j].setEnabled(false);
+                        selectRobotBox(boxViews[i][j]);
                         return true;
                     } else {
                         boxArray[i][j] = VALUE_DEFAULT;
@@ -116,8 +114,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
                     int winner = checkWinner();
                     if (winner == VALUE_USER) {
                         boxArray[i][j] = VALUE_ROBOT;
-                        textViews[i][j].setText("0");
-                        textViews[i][j].setEnabled(false);
+                        selectRobotBox(boxViews[i][j]);
                         return true;
                     } else {
                         boxArray[i][j] = VALUE_DEFAULT;
@@ -129,11 +126,14 @@ public class GameActivity extends Activity implements View.OnClickListener {
             int randomPos = Utils.getRandom(0, emptyList.size());
             Pair<Integer, Integer> emptyPair = emptyList.get(randomPos);
             boxArray[emptyPair.first][emptyPair.second] = VALUE_ROBOT;
-            TextView textView = textViews[emptyPair.first][emptyPair.second];
-            textView.setText("0");
-            textView.setEnabled(false);
+            selectRobotBox(boxViews[emptyPair.first][emptyPair.second]);
             return true;
         }
+    }
+
+    private void selectRobotBox(ImageView imageView) {
+        imageView.setImageResource(R.drawable.ic_circle);
+        imageView.setEnabled(false);
     }
 
     /**
@@ -153,9 +153,9 @@ public class GameActivity extends Activity implements View.OnClickListener {
         return emptyList;
     }
 
-    private void userTurn(TextView textView) {
-        textView.setText("1");
-        textView.setEnabled(false);
+    private void userTurn(ImageView imageView) {
+        imageView.setImageResource(R.drawable.ic_cross);
+        imageView.setEnabled(false);
         robotTurn();
     }
 
@@ -205,23 +205,23 @@ public class GameActivity extends Activity implements View.OnClickListener {
     }
 
     private void initLayout() {
-        textViews = new TextView[3][3];
-        textViews[0][0] = mBinding.text00;
-        textViews[0][1] = mBinding.text01;
-        textViews[0][2] = mBinding.text02;
+        boxViews = new ImageView[3][3];
+        boxViews[0][0] = mBinding.text00;
+        boxViews[0][1] = mBinding.text01;
+        boxViews[0][2] = mBinding.text02;
 
-        textViews[1][0] = mBinding.text10;
-        textViews[1][1] = mBinding.text11;
-        textViews[1][2] = mBinding.text12;
+        boxViews[1][0] = mBinding.text10;
+        boxViews[1][1] = mBinding.text11;
+        boxViews[1][2] = mBinding.text12;
 
-        textViews[2][0] = mBinding.text20;
-        textViews[2][1] = mBinding.text21;
-        textViews[2][2] = mBinding.text22;
+        boxViews[2][0] = mBinding.text20;
+        boxViews[2][1] = mBinding.text21;
+        boxViews[2][2] = mBinding.text22;
 
-        int size = textViews.length;
+        int size = boxViews.length;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                textViews[i][j].setOnClickListener(this);
+                boxViews[i][j].setOnClickListener(this);
             }
         }
     }
