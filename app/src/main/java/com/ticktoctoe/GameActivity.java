@@ -123,7 +123,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
             }
 
             // choose random move position
-            int randomPos = Utils.getRandom(0, emptyList.size());
+            int randomPos = Utils.getRandom(0, emptyList.size() - 1);
             Pair<Integer, Integer> emptyPair = emptyList.get(randomPos);
             boxArray[emptyPair.first][emptyPair.second] = VALUE_ROBOT;
             selectRobotBox(boxViews[emptyPair.first][emptyPair.second]);
